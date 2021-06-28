@@ -6,3 +6,4 @@ This repository contains code and data for the experiments of our paper "Density
 * `exp3`: contains the experiment with statistical downscaling of precipitation based on DeepSD
 * `smogn_with_denseweight`: contains the smogn library modified to allow using DenseWeight as a relevance function 
 
+Our proposed method DenseWeight is also available [here](https://github.com/SteiMi/denseweight) as an easy-to-use Python package.
