@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ${JOB_NAME}
+  namespace: ${NAMESPACE}
+spec:
+  template:
+    spec:
+      priorityClassName: research-low
+      containers:
+        - name: worker
+          image: INSERT_YOUR_REGISTRY/denseloss:v1.2.0
+          imagePullPolicy: "Always"
+          command: ["python", "run.py"]
+          args: ["${JOB_NAME}", "--dataset", "${DATASET}"${WEIGHTED_LOSS_STR}, "--alpha", "${ALPHA}", "--k8s",
+                 "-l1", "10", "-l2", "10", "-l3", "10", "--weight_decay", "0.0001", "--learning_rate", "0.0001",
+                 "--batch_size", "64"]
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+              # nvidia.com/gpu: "1"
+            requests:
+              cpu: "1"
+              memory: "1Gi"
+              # nvidia.com/gpu: "1"
+          volumeMounts:
+            - mountPath: "/app/checkpoints"
+              name: cache
+            - mountPath: "/app/checkpoints-persistent"
+              name: out
+            - mountPath: "/app/data"
+              name: data
+      securityContext:
+        runAsUser: YOUR_USERID
+        fsGroup: YOUR_GID
+      imagePullSecrets:
+        - name: YOUR_REGISTRY_SECRET
+      volumes:
+        - name: data
+          cephfs:
+            monitors:
+              - YOUR_CEPH_MONITOR_IPS
+            user: YOUR_K8S_USER
+            path: "YOUR_BASEPATH/data/denseloss"
+            secretRef:
+              name: ceph-secret
+        - name: out
+          cephfs:
+            monitors:
+              - YOUR_CEPH_MONITOR_IPS
+            user: YOUR_K8S_USER
+            # For synthetic tests, I used the following Path:
+            # path: "YOUR_BASEPATH/models/weighted-loss/synthetic/${DATASET}"
+            # For real tests, I used the following Path:
+            path: "YOUR_BASEPATH/models/weighted-loss/real/${DATASET}"
+            secretRef:
+              name: ceph-secret
+        - name: cache
+          emptyDir:
+            medium: Memory
+      restartPolicy: Never
+  backoffLimit: 1
+  completions: 1
+  parallelism: 1

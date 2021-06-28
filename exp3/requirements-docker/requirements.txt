@@ -1,0 +1,12 @@
+gdal
+xarray
+numpy
+matplotlib
+scikit-learn
+opencv-python
+Pillow
+psutil
+memory_profiler
+functools32
+tqdm
+scipy

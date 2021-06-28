@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: deepsd-evaluate
+  namespace: YOUR_NAMESPACE
+spec:
+  template:
+    spec:
+      priorityClassName: research-med
+      containers:
+        - name: worker
+          image: INSERT_YOUR_REGISTRY/deepsd-evaluate:latest
+          imagePullPolicy: "Always"
+          resources:
+            limits:
+              cpu: "2"
+              memory: "40Gi"
+            requests:
+              cpu: "2"
+              memory: "40Gi"
+          volumeMounts:
+            - mountPath: "/scratch"
+              name: scratch
+      securityContext:
+        runAsUser: YOUR_USERID
+        fsGroup: YOUR_GID
+      imagePullSecrets:
+        - name: YOUR_REGISTRY_SECRET
+      volumes:
+        - name: scratch
+          cephfs:
+            monitors:
+              - YOUR_CEPH_IPS
+            user: YOUR_USERNAME
+            path: "/scratch"
+            secretRef:
+              name: ceph-secret
+      restartPolicy: Never
+  backoffLimit: 1
+  completions: 1
+  parallelism: 1

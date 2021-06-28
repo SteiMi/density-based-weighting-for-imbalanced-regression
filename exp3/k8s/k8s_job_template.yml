@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ${JOB_NAME}
+  namespace: ${NAMESPACE}
+spec:
+  template:
+    spec:
+      priorityClassName: research-med
+      containers:
+        - name: worker
+          image: INSERT_YOUR_REGISTRY/deepsd:latest
+          imagePullPolicy: "Always"
+          resources:
+            limits:
+              cpu: "12"
+              memory: "30Gi"
+              nvidia.com/gpu: "1"
+            requests:
+              cpu: "12"
+              memory: "30Gi"
+              nvidia.com/gpu: "1"
+          volumeMounts:
+            - mountPath: "YOUR_HOME"
+              name: home
+            - mountPath: "/scratch"
+              name: scratch
+            - mountPath: "/app/config.ini"
+              name: config
+              subPath: "${CONFIG_NAME}"
+          command: ["sh", "-c", "./run_job.sh"] # Train + inference
+      securityContext:
+        runAsUser: YOUR_USERID
+        fsGroup: YOUR_GID
+      imagePullSecrets:
+        - name: YOUR_REGISTRY_SECRET
+      volumes:
+        - name: home
+          cephfs:
+            monitors:
+              - YOUR_CEPH_IPS
+            user: YOUR_USERNAME
+            path: "YOUR_HOME"
+            secretRef:
+              name: ceph-secret
+        - name: scratch
+          cephfs:
+            monitors:
+              - YOUR_CEPH_IPS
+            user: YOUR_USERNAME
+            path: "/scratch"
+            secretRef:
+              name: ceph-secret
+        - name: config
+          configMap:
+            name: "${CONFIGMAP_NAME}"
+      restartPolicy: Never
+  backoffLimit: 1
+  completions: 1
+  parallelism: 1

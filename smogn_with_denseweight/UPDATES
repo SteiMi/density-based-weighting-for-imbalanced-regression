@@ -1,0 +1,87 @@
+SMOGN-0.0.0: 2019-08-01
+==========================
+- Research & Literature Review
+- Author Contact
+- Pre-Development & Planning
+
+SMOGN-0.0.0: 2019-09-01
+==========================
+- Core Python Development
+- Lots of Debugging
+
+SMOGN-0.0.0: 2019-10-01
+==========================
+- Core Python Development
+- Lots of Debugging
+- C and Fortran 90 Function Translation
+
+SMOGN-0.0.1: 2019-11-15
+==========================
+- Base Code Completion
+- Code Comments
+- Initial Testing
+- Beta Versioning
+
+SMOGN-0.0.1: 2019-11-16
+==========================
+- Documentation & DocStrings
+- GPLv3 License Declaration
+- First Git commit
+- PyPi distribution
+
+SMOGN-0.0.2: 2019-11-19
+==========================
+- Include sample data
+- Add usage example
+- Add logo
+- Unit testing in progress
+
+SMOGN-0.0.3: 2019-11-20
+==========================
+- Global changes to naming conventions
+- Major bug fix to modules
+
+SMOGN-0.0.4: 2019-11-23
+==========================
+- Import all modules
+
+SMOGN-0.0.5: 2019-11-26
+==========================
+- Import all modules fixes
+
+SMOGN-0.0.6: 2019-11-30
+==========================
+- Import all modules final fixes
+
+SMOGN-0.0.6: 2019-12-05
+==========================
+- Add example tutorial (Beginner) 
+
+SMOGN-0.0.7: 2019-12-08
+==========================
+- Remove unused arguments: phi_ctrl_pts
+- Fix "manual" rel_ctrl_pts_rg input
+
+SMOGN-0.0.8: 2019-12-09
+==========================
+- Minor bug fixes
+
+SMOGN-0.0.9: 2019-12-10
+==========================
+- Add example tutorials (Intermediate, Advanced)
+
+SMOGN-0.1.0: 2019-12-22
+==========================
+- Add perturbation argument
+- Fix under-sampling bugs
+- Update all example tutorials
+- Check code quality
+
+SMOGN-0.1.1: 2020-03-23
+==========================
+- Add progress bar
+- Add option to not under-sample
+
+SMOGN-0.1.2: 2020-04-03
+==========================
+- Fix input error handling
